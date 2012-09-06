@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Appfigures do
+describe 'Appfigures product sales' do
   before do
     status_code = 200
     headers = {
