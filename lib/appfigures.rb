@@ -1,5 +1,6 @@
 require 'appfigures/version'
 require 'appfigures/connection'
+require 'utils/hash_extensions'
 
 require 'date'
 
@@ -17,6 +18,9 @@ class Appfigures
         'store_name'      => hash['product']['store_name'],
         'name'            => hash['product']['name'],
         'sku'             => hash['product']['sku'],
+        'ref_no'          => hash['product']['ref_no'],
+        'added_timestamp' => Date.parse(hash['product']['added_timestamp']),
+        'icon'            => hash['product']['icon'],
         'downloads'       => hash['downloads'].to_i,
         'returns'         => hash['returns'].to_i,
         'updates'         => hash['updates'].to_i,
@@ -28,8 +32,11 @@ class Appfigures
     end
   end
 
-  def date_sales(start_date, end_date)
-    url = "sales/dates+products/#{start_date.strftime('%Y-%m-%d')}/#{end_date.strftime('%Y-%m-%d')}"
+
+  # GET /sales/dates+products/2013-03-01/2013-03-31
+  # See http://docs.appfigures.com/api/reference/v1-1/sales
+  def date_sales(start_date, end_date, options = {})
+    url = "sales/dates+products/#{start_date.strftime('%Y-%m-%d')}/#{end_date.strftime('%Y-%m-%d')}#{options.to_query_string(true)}"
     self.connection.get(url).body.map do |date, product|
       product.map do |product_id, hash|
         Hashie::Mash.new({
@@ -39,6 +46,7 @@ class Appfigures
           'store_name'      => hash['product']['store_name'],
           'name'            => hash['product']['name'],
           'sku'             => hash['product']['sku'],
+          'ref_no'          => hash['product']['ref_no'],
           'downloads'       => hash['downloads'].to_i,
           'returns'         => hash['returns'].to_i,
           'updates'         => hash['updates'].to_i,
