@@ -89,15 +89,12 @@ describe 'Appfigures product sales' do
   it 'returns a revenue number' do
     expect(@api.product_sales.first.revenue).to eq(100.99)
   end
-
   it 'returns a ref_no' do
     expect(@api.product_sales.first.ref_no).to eq('536354432')
   end
-
   it 'returns an added timestamp' do
     expect(@api.product_sales.first.added_timestamp).to eq(Date.parse('2012-07-23T00:00:00'))
   end
-
   it 'returns an icon' do
     expect(@api.product_sales.first.icon).to eq('http://a5.mzstatic.com/us/r1000/091/Purple/v4/20/69/65/20696562-4e19-17fe-5ffe-cb77a78e1651/mzl.jtpselsb.png')
   end
