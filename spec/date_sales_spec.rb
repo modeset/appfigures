@@ -47,10 +47,23 @@ describe 'Appfigures date sales' do
         }
       }
       EOF
+    body223123 = <<-EOF
+      {
+	"2012-09-01": {
+	  "223123": {
+	    "downloads": 30,
+	    "product": {
+	      "id": 223123
+	    }
+	  }
+	}
+      }
+      EOF
       @api = Appfigures.new username: 'test', password: 'test'
       @stubs = Faraday::Adapter::Test::Stubs.new do |stub|
+	stub.get('/v1.1/sales/dates+products/2012-09-01/2012-09-01?products=223123') { [status_code, headers, body223123] }
         stub.get('/v1.1/sales/dates+products/2012-09-01/2012-09-01') { [status_code, headers, body] }
-      end
+	end
       @api.connection.adapter :test, @stubs
   end
 
@@ -93,6 +106,9 @@ describe 'Appfigures date sales' do
   end
   it 'returns a revenue number' do
     expect(@api.date_sales(start_date, end_date).first.revenue).to eq(100.99)
+  end
+  it 'returns a specific product ID' do
+    expect(@api.date_sales(start_date, end_date, { :products => 223123 }).first.product_id).to eq(223123)
   end
 
 end
