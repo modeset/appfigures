@@ -78,6 +78,36 @@ class Appfigures
     end
   end
 
+  # GET /reviews/{productId}/{countries}/{page}/?language={language}
+  # See http://docs.appfigures.com/api/reference/v1-1/reviews
+  def product_reviews(product_id, countries, page = 0, options = {})
+    url = "reviews/#{product_id}/#{countries}/#{page}#{options.to_query_string(true)}"
+    country_reviews = self.connection.get(url).body.map do |country, hash|
+        Hashie::Mash.new({
+          'num_reviews'         => hash['num_reviews'],
+          'all_ratings'         => hash['all_ratings'],
+          'ratings'             => hash['ratings'],
+          'all_stars'           => hash['all_stars'],
+          'stars'               => hash['stars'],
+          'all_star_breakdown'  => hash['all_star_breakdown'],
+          'star_breakdown'      => hash['star_breakdown'],
+          'iso'                 => hash['iso_country'],
+          'country'             => hash['country'],
+          'reviews'             => hash['reviews'].map do |review|
+            Hashie::Mash.new({
+             'stars'   => review['stars'],
+             'date'    => review['date'],
+             'title'   => review['title'],
+             'review'  => review['review'],
+             'version' => review['version'],
+             'author'  => review['author']
+            })
+          end
+        })
+      end
+  end
+
+
 
 
 
