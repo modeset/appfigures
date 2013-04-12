@@ -59,5 +59,26 @@ class Appfigures
     end
   end
 
+  # GET /sales/country/{start_date}/{end_date}?data_source={data_source}&products={product_ids}&country={country}&format={format}
+  # See http://docs.appfigures.com/api/reference/v1-1/sales
+  def country_sales(start_date, end_date, options = {})
+    url = "sales/countries/#{start_date.strftime('%Y-%m-%d')}/#{end_date.strftime('%Y-%m-%d')}#{options.to_query_string(true)}"
+    self.connection.get(url).body.map do |country, hash|
+      Hashie::Mash.new({
+          'iso'             => hash['iso'],
+          'country'         => hash['country'],
+          'downloads'       => hash['downloads'],
+          'updates'         => hash['updates'],
+          'returns'         => hash['returns'],
+          'net_downloads'   => hash['net_downloads'],
+          'promos'          => hash['promos'],
+          'revenue'         => hash['revenue'],
+          'git_redemptions' => hash['gift_redemptions'],
+      })
+    end
+  end
+
+
+
 
 end
