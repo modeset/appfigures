@@ -98,5 +98,8 @@ describe 'Appfigures product sales' do
   it 'returns an icon' do
     expect(@api.product_sales.first.icon).to eq('http://a5.mzstatic.com/us/r1000/091/Purple/v4/20/69/65/20696562-4e19-17fe-5ffe-cb77a78e1651/mzl.jtpselsb.png')
   end
+  it 'returns active' do
+    expect(@api.product_sales.first.active).to eq(true)
+  end
 
 end

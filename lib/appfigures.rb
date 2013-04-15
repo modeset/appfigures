@@ -27,7 +27,8 @@ class Appfigures
         'net_downloads'   => hash['net_downloads'].to_i,
         'promos'          => hash['promos'].to_i,
         'gift_redemptions'=> hash['gift_redemptions'].to_i,
-        'revenue'         => hash['revenue'].to_f
+        'revenue'         => hash['revenue'].to_f,
+        'active'          => hash['product']['active']
       })
     end
   end
