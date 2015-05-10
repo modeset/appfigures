@@ -17,132 +17,219 @@ describe 'Appfigures product reviews' do
       'Transfer-Encoding'   => 'Identity'
     }
     body = <<-EOF
-      {
-        "au": {
-          "store_id": 143460,
-          "country": "Australia",
-          "iso_country": "AU",
-          "all_ratings": 0,
-          "ratings": 0,
-          "all_stars": "0.00",
-          "stars": "0.00",
-          "num_pages": null,
-          "num_reviews": null,
-          "all_star_breakdown": "",
-          "star_breakdown": "",
-          "reviews": []
-        },
-        "ca": {
-          "store_id": 143455,
-          "country": "Canada",
-          "iso_country": "CA",
-          "all_ratings": 0,
-          "ratings": 0,
-          "all_stars": "0.00",
-          "stars": "0.00",
-          "num_pages": 1,
-          "num_reviews": null,
-          "all_star_breakdown": "",
-          "star_breakdown": "",
-          "reviews": [
-            {
-              "title": "Future of apps",
-              "review": "Work data at my fingertips. Less need to be at the office.",
-              "original_title": "Future of app",
-              "original_review": "Work data at my fingertips. Less need to be at the office.",
-              "author": "reviewer123",
-              "version": "2.2.0",
-              "date": "31-Aug-2012",
-              "stars": "5.00",
-              "review_type": "review",
-              "type": "major",
-              "id": 143455,
-              "iso": "CA",
-              "country": "Canada"
-            }
-          ]
-        },
-        "de": {
-          "store_id": 143443,
-          "country": "Germany",
-          "iso_country": "DE",
-          "all_ratings": 0,
-          "ratings": 0,
-          "all_stars": "0.00",
-          "stars": "0.00",
-          "num_pages": null,
-          "num_reviews": null,
-          "all_star_breakdown": "",
-          "star_breakdown": "",
-          "reviews": []
-        },
-        "us": {
-            "store_id": 143441,
-            "country": "United States",
-            "iso_country": "US",
-            "all_ratings": 0,
-            "ratings": 0,
-            "all_stars": "0.00",
-            "stars": "0.00",
-            "num_pages": 1,
-            "num_reviews": null,
-            "all_star_breakdown": "",
-            "star_breakdown": "",
-            "reviews": [
-            {
-              "title": "Great app!",
-              "review": "Fantastic way to communicate.",
-              "original_title": "Great app!",
-              "original_review": "Fantastic way to communicate.",
-              "author": "OneTimeHiker",
-              "version": "2.0.0",
-              "date": "21-Jun-2012",
-              "stars": "5.00",
-              "review_type": "review",
-              "type": "major",
-              "id": 143441,
-              "iso": "US",
-              "country": "United States"
-            },
-            {
-              "title": "office manager",
-              "review": "Lorem ipsum",
-              "original_title": "office manager",
-              "original_review": "Lorem ipsum",
-              "author": "Lilly, office manager",
-              "version": "1.0.7",
-              "date": "10-Apr-2012",
-              "stars": "5.00",
-              "review_type": "review",
-              "type": "major",
-              "id": 143441,
-              "iso": "US",
-              "country": "United States"
-            }
-            ]
-        }
-      }
+{
+  "total": 10,
+  "pages": 1,
+  "this_page": 1,
+  "reviews": [
+    {
+      "author": "Extremely happy customer :)",
+      "title": "So happy!",
+      "review": "Great app & great surgeon had my nose done with him 6 months ago and very happy with the results! :)",
+      "original_title": "So happy!",
+      "original_review": "Great app & great surgeon had my nose done with him 6 months ago and very happy with the results! :)",
+      "stars": "5.00",
+      "iso": "AU",
+      "version": null,
+      "date": "2013-09-08T12:31:00",
+      "product": 6764936,
+      "weight": 0,
+      "id": "6764936LMZFNAEP14DA17opqFW0qkw==",
+      "predicted_langs": [
+        "en"
+      ]
+    },
+    {
+      "author": "Extremely happy customer :)",
+      "title": "So happy!",
+      "review": "Great app & great surgeon had my nose done with him 6 months ago and very happy with the results! :)",
+      "original_title": "So happy!",
+      "original_review": "Great app & great surgeon had my nose done with him 6 months ago and very happy with the results! :)",
+      "stars": "5.00",
+      "iso": "AU",
+      "version": null,
+      "date": "2013-09-08T12:31:00",
+      "product": 6764936,
+      "weight": 0,
+      "id": "6764936LIw1AZww6P2h2ot9ZkjylXQ==",
+      "predicted_langs": [
+        "en"
+      ]
+    },
+    {
+      "author": "GelatinousFire",
+      "title": "Easy to use, helpful",
+      "review": "I think I've been getting carried away with using this app too much. The only thing I would suggest is having a feature to save the before and after together, especially if the photo was taken in-app and not saved on the device already.",
+      "original_title": "Easy to use, helpful",
+      "original_review": "I think I've been getting carried away with using this app too much. The only thing I would suggest is having a feature to save the before and after together, especially if the photo was taken in-app and not saved on the device already.",
+      "stars": "5.00",
+      "iso": "AU",
+      "version": null,
+      "date": "2013-09-07T03:17:00",
+      "product": 6764936,
+      "weight": 0,
+      "id": "6764936LTWoPGlw4Jv1mL6Is4IfvJA==",
+      "predicted_langs": [
+        "en"
+      ]
+    },
+    {
+      "author": "Needanewnose",
+      "title": "Awesome from me too",
+      "review": "Excellent idea - very helpful if considering surgery!!",
+      "original_title": "Awesome from me too",
+      "original_review": "Excellent idea - very helpful if considering surgery!!",
+      "stars": "5.00",
+      "iso": "AU",
+      "version": null,
+      "date": "2012-12-31T08:29:00",
+      "product": 6764936,
+      "weight": 0,
+      "id": "6764936LABQtADfYjihiTLnGfoitww==",
+      "predicted_langs": [
+        "en"
+      ]
+    },
+    {
+      "author": "Aplen",
+      "title": "Awesome",
+      "review": "Love this app. Works fine.",
+      "original_title": "Awesome",
+      "original_review": "Love this app. Works fine.",
+      "stars": "5.00",
+      "iso": "AU",
+      "version": null,
+      "date": "2012-11-01T11:45:00",
+      "product": 6764936,
+      "weight": 0,
+      "id": "6764936LWwOvS-+7wc5CYg1fNybp+w==",
+      "predicted_langs": [
+        "en"
+      ]
+    },
+    {
+      "author": "Buybuybuybuy",
+      "title": "Awesome",
+      "review": "Aww now I really want a nose job!!!",
+      "original_title": "Awesome",
+      "original_review": "Aww now I really want a nose job!!!",
+      "stars": "5.00",
+      "iso": "AU",
+      "version": null,
+      "date": "2012-08-18T04:28:00",
+      "product": 6764936,
+      "weight": 0,
+      "id": "6764936LbHD103TUYNFH-ef0ZBJl-w==",
+      "predicted_langs": [
+        "en"
+      ]
+    },
+    {
+      "author": "Shnoz66",
+      "title": "Fix my nose",
+      "review": "Great app Dr Shahidi Love your work",
+      "original_title": "Fix my nose",
+      "original_review": "Great app Dr Shahidi Love your work",
+      "stars": "5.00",
+      "iso": "AU",
+      "version": null,
+      "date": "2012-06-22T22:37:00",
+      "product": 6764936,
+      "weight": 0,
+      "id": "6764936Lk31Vr1HbM0zRYqCw6fwxUw==",
+      "predicted_langs": [
+        "en",
+        "af",
+        "la",
+        "nl"
+      ]
+    },
+    {
+      "author": "Shnoz66",
+      "title": "Fix my nose",
+      "review": "Great app Dr Shahidi<br/>Love your work",
+      "original_title": "Fix my nose",
+      "original_review": "Great app Dr Shahidi<br/>Love your work",
+      "stars": "5.00",
+      "iso": "AU",
+      "version": null,
+      "date": "2012-06-22T10:37:00",
+      "product": 6764936,
+      "weight": 0,
+      "id": "6764936Lgo8PsGRm1+ZtKI0wLiagdQ==",
+      "predicted_langs": [
+        "en",
+        "af",
+        "la",
+        "nl"
+      ]
+    },
+    {
+      "author": "Happypatient",
+      "title": "Dr Shahidi",
+      "review": "The app is fun and Dr Shahidi is a genius!",
+      "original_title": "Dr Shahidi",
+      "original_review": "The app is fun and Dr Shahidi is a genius!",
+      "stars": "5.00",
+      "iso": "AU",
+      "version": null,
+      "date": "2012-02-16T07:30:00",
+      "product": 6764936,
+      "weight": 0,
+      "id": "6764936LBbqGDq1qPu6LuLMS4tCj7w==",
+      "predicted_langs": [
+        "la",
+        "en",
+        "cy",
+        "af",
+        "lb"
+      ]
+    },
+    {
+      "author": "Eddy EF",
+      "title": "Facial plastic surgery",
+      "review": "It's a great facial surgeries performed by this doctor, I recommend it.",
+      "original_title": "Facial plastic surgery",
+      "original_review": "It's a great facial surgeries performed by this doctor, I recommend it.",
+      "stars": "5.00",
+      "iso": "AU",
+      "version": null,
+      "date": "2011-10-13T07:30:00",
+      "product": 6764936,
+      "weight": 0,
+      "id": "6764936LmBQyYvLr3+vY-hWhn1lt4g==",
+      "predicted_langs": [
+        "en"
+      ]
+    }
+  ]
+}
+
       EOF
       @api = Appfigures.new username: 'test', password: 'test', client_key: 'test'
       @stubs = Faraday::Adapter::Test::Stubs.new do |stub|
-        stub.get('/v2/reviews/1234567/major/0') { [status_code, headers, body] }
+        stub.get('/v2/reviews?lang=en&products=6764936') { [status_code, headers, body] }
       end
       @api.connection.adapter :test, @stubs
   end
 
-  let(:product_id) { "1234567" }
-  let(:countries) { "major" }
+  let(:product_id) { "6764936" }
 
-  it 'returns 4 countries' do
-    expect(@api.product_reviews(product_id, countries).count).to eq(4)
+  it 'returns 10 reviews' do
+    expect(@api.product_reviews(product_id).reviews.count).to eq(10)
   end
 
-  it 'au returns 0 reviews' do
-    expect(@api.product_reviews(product_id, countries).first.reviews.count).to eq(0)
+
+  it 'returns review text' do
+    expect(@api.product_reviews(product_id).reviews[0].review).to eq("Great app & great surgeon had my nose done with him 6 months ago and very happy with the results! :)")
   end
 
-  it 'ca returns review text' do
-    expect(@api.product_reviews(product_id, countries)[1].reviews[0].review).to eq("Work data at my fingertips. Less need to be at the office.")
+  it 'returns review title' do
+    expect(@api.product_reviews(product_id).reviews[1].title).to eq("So happy!")
+  end
+
+  it 'returns review stars' do
+    expect(@api.product_reviews(product_id).reviews[0].stars).to eq("5.00")
   end
 
 
