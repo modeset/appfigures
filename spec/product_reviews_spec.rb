@@ -123,9 +123,9 @@ describe 'Appfigures product reviews' do
         }
       }
       EOF
-      @api = Appfigures.new username: 'test', password: 'test'
+      @api = Appfigures.new username: 'test', password: 'test', client_key: 'test'
       @stubs = Faraday::Adapter::Test::Stubs.new do |stub|
-        stub.get('/v1.1/reviews/1234567/major/0') { [status_code, headers, body] }
+        stub.get('/v2/reviews/1234567/major/0') { [status_code, headers, body] }
       end
       @api.connection.adapter :test, @stubs
   end

@@ -59,10 +59,10 @@ describe 'Appfigures date sales' do
 	}
       }
       EOF
-      @api = Appfigures.new username: 'test', password: 'test'
+      @api = Appfigures.new username: 'test', password: 'test', client_key: 'test'
       @stubs = Faraday::Adapter::Test::Stubs.new do |stub|
-	stub.get('/v1.1/sales/dates+products/2012-09-01/2012-09-01?products=223123') { [status_code, headers, body223123] }
-        stub.get('/v1.1/sales/dates+products/2012-09-01/2012-09-01') { [status_code, headers, body] }
+	    stub.get('/v2/sales/dates+products/2012-09-01/2012-09-01?products=223123') { [status_code, headers, body223123] }
+      stub.get('/v2/sales/dates+products/2012-09-01/2012-09-01') { [status_code, headers, body] }
 	end
       @api.connection.adapter :test, @stubs
   end

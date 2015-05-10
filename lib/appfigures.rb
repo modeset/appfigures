@@ -7,7 +7,7 @@ require 'date'
 class Appfigures
   attr_reader :connection
   def initialize(options = {})
-    @connection = Appfigures::Connection.new options[:username], options[:password]
+    @connection = Appfigures::Connection.new options[:username], options[:password], options[:client_key]
   end
 
   def product_sales
