@@ -44,7 +44,7 @@ describe 'Appfigures country sales' do
       EOF
       @api = Appfigures.new username: 'test', password: 'test', client_key: 'test'
       @stubs = Faraday::Adapter::Test::Stubs.new do |stub|
-        stub.get('/v2/sales/countries/2013-03-01/2013-03-31') { [status_code, headers, body] }
+        stub.get('/v2/reports/sales?end=2013-03-31&group_by=country&start=2013-03-01') { [status_code, headers, body] }
       end
       @api.connection.adapter :test, @stubs
   end
