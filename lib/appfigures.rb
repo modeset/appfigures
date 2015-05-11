@@ -93,9 +93,7 @@ class Appfigures
     options = {products: product_id,
                lang: 'en'
               }.merge(options)
-    #url = "reviews/#{product_id}/#{countries}/#{page}#{options.to_query_string(true)}"
     response = self.connection.get(url, options).body
-
     reviews = Hashie::Mash.new({
                              'total' => response['total'].to_i,
                              'pages' => response['pages'].to_i,
