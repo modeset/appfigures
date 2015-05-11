@@ -114,8 +114,18 @@ class Appfigures
               })
   end
 
-
-
-
+  # GET /ratings?group_by=product&products={productId}
+  def product_ratings(product_id, options = {})
+    url = "ratings"
+    options = {group_by: 'product',
+               products: product_id}.merge(options)
+    self.connection.get(url, options).body.map do |product, hash|
+      Hashie::Mash.new({
+          'breakdown' => hash['breakdown'],
+          'average' => hash['average'],
+          'product_id' => hash['product_id']
+      })
+    end.first
+  end
 
 end
