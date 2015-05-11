@@ -10,6 +10,7 @@ class Appfigures
     @connection = Appfigures::Connection.new options[:username], options[:password], options[:client_key]
   end
 
+  #https://api.appfigures.com/v2/reports/sales/?group_by=product&client_key=c0725e4c875b412fbca6b12b5db44a4e
   def product_sales
     url = 'reports/sales'
     options = {group_by: 'product'}
@@ -43,7 +44,7 @@ class Appfigures
     url = "reports/sales/dates+products"
 
     options = {start: start_date.strftime('%Y-%m-%d'),
-               end: start_date.strftime('%Y-%m-%d')}.merge(options)
+               end: end_date.strftime('%Y-%m-%d')}.merge(options)
 
     self.connection.get(url, options).body.map do |date, product|
       product.map do |product_id, hash|

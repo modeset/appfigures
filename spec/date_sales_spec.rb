@@ -46,14 +46,14 @@ describe 'Appfigures date sales' do
       @api = Appfigures.new username: 'test', password: 'test', client_key: 'test'
       @stubs = Faraday::Adapter::Test::Stubs.new do |stub|
 
-	    stub.get('/v2/reports/sales/dates+products?end=2012-09-01&products=223123&start=2012-09-01') { [status_code, headers, body223123] }
-      stub.get('/v2/reports/sales/dates+products?end=2012-09-01&start=2012-09-01') { [status_code, headers, body] }
+	    stub.get('/v2/reports/sales/dates+products?end=2012-09-30&products=223123&start=2012-09-01') { [status_code, headers, body223123] }
+      stub.get('/v2/reports/sales/dates+products?end=2012-09-30&start=2012-09-01') { [status_code, headers, body] }
 	end
       @api.connection.adapter :test, @stubs
   end
 
   let(:start_date) { Date.parse('2012-09-01') }
-  let(:end_date) { Date.parse('2012-09-01') }
+  let(:end_date) { Date.parse('2012-09-30') }
 
   it 'returns a product ID' do
     expect(@api.date_sales(start_date, end_date).first.product_id).to eq(123123)
