@@ -11,15 +11,18 @@ class Appfigures
   end
 
   def product_sales
-    self.connection.get('sales/products').body.map do |id, hash|
+    url = 'reports/sales'
+    options = {group_by: 'product'}
+
+    self.connection.get(url, options).body.map do |id, hash|
       Hashie::Mash.new({
         'product_id'      => hash['product']['id'],
         'store_id'        => hash['product']['store_id'],
-        'store_name'      => hash['product']['store_name'],
+        'store_name'      => hash['product']['store'],
         'name'            => hash['product']['name'],
         'sku'             => hash['product']['sku'],
         'ref_no'          => hash['product']['ref_no'],
-        'added_timestamp' => Date.parse(hash['product']['added_timestamp']),
+        'added_timestamp' => Date.parse(hash['product']['source']['added_timestamp']),
         'icon'            => hash['product']['icon'],
         'downloads'       => hash['downloads'].to_i,
         'returns'         => hash['returns'].to_i,
@@ -28,21 +31,20 @@ class Appfigures
         'promos'          => hash['promos'].to_i,
         'gift_redemptions'=> hash['gift_redemptions'].to_i,
         'revenue'         => hash['revenue'].to_f,
-        'active'          => hash['product']['active']
+        'active'          => hash['product']['source']['active']
       })
     end
   end
 
 
-  # GET /sales/dates+products/2013-03-01/2013-03-31
-  # See http://docs.appfigures.com/api/reference/v1-1/sales
+  # GET /reports/sales/dates+products?start=2013-03-01&end=2013-03-31
+  # See http://docs.appfigures.com/api/reference/v2/sales
   def date_sales(start_date, end_date, options = {})
     url = "reports/sales/dates+products"
 
     options = {start: start_date.strftime('%Y-%m-%d'),
                end: start_date.strftime('%Y-%m-%d')}.merge(options)
 
-    #url = "sales/dates+products/#{start_date.strftime('%Y-%m-%d')}/#{end_date.strftime('%Y-%m-%d')}#{options.to_query_string(true)}"
     self.connection.get(url, options).body.map do |date, product|
       product.map do |product_id, hash|
         Hashie::Mash.new({
@@ -60,8 +62,8 @@ class Appfigures
     end
   end
 
-  # GET /sales/country/{start_date}/{end_date}?data_source={data_source}&products={product_ids}&country={country}&format={format}
-  # See http://docs.appfigures.com/api/reference/v1-1/sales
+  # GET /reports/sales?group_by=country&start=start_date&end=end_date
+  # See http://docs.appfigures.com/api/reference/v2/sales
   def country_sales(start_date, end_date, options = {})
     url = "reports/sales"
     options = {group_by: 'country',
@@ -83,8 +85,8 @@ class Appfigures
     end
   end
 
-  # GET /reviews/{productId}/{countries}/{page}/?language={language}
-  # See http://docs.appfigures.com/api/reference/v1-1/reviews
+  # GET /reviews?products={productId}&lang=en
+  # See http://docs.appfigures.com/api/reference/v2/reviews
   def product_reviews(product_id, options = {})
     url = "reviews"
     options = {products: product_id,
