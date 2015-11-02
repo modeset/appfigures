@@ -114,14 +114,17 @@ class Appfigures
               })
   end
 
-  # GET /ratings?group_by=product&products={productId}
+  # GET /ratings?group_by=product&start_date={today}&end_date={today}products={productId}
   def product_ratings(product_id, options = {})
     url = "ratings"
+    now = Time.now
+    today = Date.new(now.year, now.month, now.day).strftime('%Y-%m-%d')
+
     options = {group_by: 'product',
-               products: product_id}.merge(options)
+               products: product_id,
+               start_date: today,
+               end_date: today}.merge(options)
     self.connection.get(url, options).body.map do |product, hash|
-      puts product
-      puts hash
       Hashie::Mash.new({
           'stars' => product['stars'],
           'product' => product['product']
