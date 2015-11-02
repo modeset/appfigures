@@ -17,59 +17,35 @@ describe 'Appfigures country sales' do
       'Transfer-Encoding'   => 'Identity'
     }
     body = <<-EOF
-{
-  "5556625": {
-    "breakdown": [
-      874,
-      276,
-      460,
-      690,
-      2300
-    ],
-    "observed": false,
-    "average": "3.71",
-    "product": {
-      "id": 5556625,
-      "name": "Plastic Surgery w/ Dr. Miller",
-      "developer": "Pixineers Inc",
-      "icon": "https://lh6.ggpht.com/jrfahsvasiddXZkGi3HOl8nBRpk8ADqSmje_FFHZG5b-YMOC1aqX1WJSUMoPuY98jY3J",
-      "vendor_identifier": "com.pixineers.philipmiller",
-      "ref_no": null,
-      "sku": "com.pixineers.philipmiller",
-      "package_name": "com.pixineers.philipmiller",
-      "store_id": 2,
-      "store": "google_play",
-      "storefront": "google_play",
-      "release_date": "2011-12-02T19:21:57",
-      "added_date": "2011-12-02T19:21:57",
-      "updated_date": "2015-05-11T09:08:22",
-      "version": " 1.9.4  ",
-      "source": null,
-      "type": "app",
-      "devices": [
-        "Handheld"
-      ],
-      "bundle_identifier": "com.pixineers.philipmiller"
-    },
-    "product_id": 5556625
+[
+  {
+    "product": 6239092,
+    "date": "2015-11-01T00:00:00",
+    "stars": [
+      16,
+      4,
+      5,
+      8,
+      29
+    ]
   }
-}
+]
       EOF
       @api = Appfigures.new username: 'test', password: 'test', client_key: 'test'
       @stubs = Faraday::Adapter::Test::Stubs.new do |stub|
-        stub.get('/v2/ratings?group_by=product&products=5556625') { [status_code, headers, body] }
+        stub.get('/v2/ratings?group_by=product&products=6239092') { [status_code, headers, body] }
       end
       @api.connection.adapter :test, @stubs
   end
 
-  let(:product_id) { "5556625" }
+  let(:product_id) { "6239092" }
 
   it 'returns star breakdown' do
-    expect(@api.product_ratings(product_id).breakdown).to eq([874, 276, 460, 690, 2300])
+    expect(@api.product_ratings(product_id).stars).to eq([16, 4, 5, 8, 29])
   end
 
-  it 'returns average' do
-    expect(@api.product_ratings(product_id).average).to eq("3.71")
+  it 'returns product' do
+    expect(@api.product_ratings(product_id).product).to eq(product_id.to_i)
   end
 
 

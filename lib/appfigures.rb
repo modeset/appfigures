@@ -120,10 +120,11 @@ class Appfigures
     options = {group_by: 'product',
                products: product_id}.merge(options)
     self.connection.get(url, options).body.map do |product, hash|
+      puts product
+      puts hash
       Hashie::Mash.new({
-          'breakdown' => hash['breakdown'],
-          'average' => hash['average'],
-          'product_id' => hash['product_id']
+          'stars' => product['stars'],
+          'product' => product['product']
       })
     end.first
   end
