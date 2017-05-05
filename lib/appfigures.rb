@@ -38,7 +38,7 @@ class Appfigures
   end
 
 
-  # GET /reports/sales/dates+products?start=2013-03-01&end=2013-03-31
+  # GET /reports/sales/dates+products?start=2017-03-01&end=2017-03-31&products=6403600
   # See http://docs.appfigures.com/api/reference/v2/sales
   def date_sales(start_date, end_date, options = {})
     url = "reports/sales/dates+products"
