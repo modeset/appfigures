@@ -3,6 +3,7 @@ require 'appfigures/connection'
 require 'utils/hash_extensions'
 
 require 'date'
+require 'json'
 
 class Appfigures
   attr_reader :connection
@@ -15,25 +16,32 @@ class Appfigures
     url = 'reports/sales'
     options = {group_by: 'product'}
 
-    self.connection.get(url, options).body.map do |id, hash|
-      Hashie::Mash.new({
-        'product_id'      => hash['product']['id'],
-        'store_id'        => hash['product']['store_id'],
-        'store_name'      => hash['product']['store'],
-        'name'            => hash['product']['name'],
-        'sku'             => hash['product']['sku'],
-        'ref_no'          => hash['product']['ref_no'],
-        'added_timestamp' => Date.parse(hash['product']['source']['added_timestamp']),
-        'icon'            => hash['product']['icon'],
-        'downloads'       => hash['downloads'].to_i,
-        'returns'         => hash['returns'].to_i,
-        'updates'         => hash['updates'].to_i,
-        'net_downloads'   => hash['net_downloads'].to_i,
-        'promos'          => hash['promos'].to_i,
-        'gift_redemptions'=> hash['gift_redemptions'].to_i,
-        'revenue'         => hash['revenue'].to_f,
-        'active'          => hash['product']['source']['active']
-      })
+    response = self.connection.get(url, options)
+    response.body.map do |id, hash|
+      if response.status == 200 
+        Hashie::Mash.new({
+            'product_id'      => hash['product']['id'],
+            'store_id'        => hash['product']['store_id'],
+            'store_name'      => hash['product']['store'],
+            'name'            => hash['product']['name'],
+            'sku'             => hash['product']['sku'],
+            'ref_no'          => hash['product']['ref_no'],
+            'added_timestamp' => Date.parse(hash['product']['source']['added_timestamp']),
+            'icon'            => hash['product']['icon'],
+            'downloads'       => hash['downloads'].to_i,
+            'returns'         => hash['returns'].to_i,
+            'updates'         => hash['updates'].to_i,
+            'net_downloads'   => hash['net_downloads'].to_i,
+            'promos'          => hash['promos'].to_i,
+            'gift_redemptions'=> hash['gift_redemptions'].to_i,
+            'revenue'         => hash['revenue'].to_f,
+            'active'          => hash['product']['source']['active']
+          })
+      else
+        puts 'Appfigures service error:'
+        puts hash.to_json
+        Hashie::Mash.new
+      end
     end
   end
 
@@ -46,20 +54,29 @@ class Appfigures
     options = {start: start_date.strftime('%Y-%m-%d'),
                end: end_date.strftime('%Y-%m-%d')}.merge(options)
 
-    self.connection.get(url, options).body.map do |date, product|
-      product.map do |product_id, hash|
-        Hashie::Mash.new({
-          'date'            => Date.parse(date),
-          'product_id'      => hash['product_id'].to_i,
-          'downloads'       => hash['downloads'].to_i,
-          'returns'         => hash['returns'].to_i,
-          'updates'         => hash['updates'].to_i,
-          'net_downloads'   => hash['net_downloads'].to_i,
-          'promos'          => hash['promos'].to_i,
-          'gift_redemptions'=> hash['gift_redemptions'].to_i,
-          'revenue'         => hash['revenue'].to_f
-        })
-      end.first
+    response = self.connection.get(url, options)
+    if response.status == 200 
+      response.body.map do |date, product|
+        product.map do |product_id, hash|
+          Hashie::Mash.new({
+            'date'            => Date.parse(date),
+            'product_id'      => hash['product_id'].to_i,
+            'downloads'       => hash['downloads'].to_i,
+            'returns'         => hash['returns'].to_i,
+            'updates'         => hash['updates'].to_i,
+            'net_downloads'   => hash['net_downloads'].to_i,
+            'promos'          => hash['promos'].to_i,
+            'gift_redemptions'=> hash['gift_redemptions'].to_i,
+            'revenue'         => hash['revenue'].to_f
+          })
+        end.first
+      end
+    else
+      response.body.map do |id, hash|
+        puts 'Appfigures service error:'
+        puts hash.to_json
+        Hashie::Mash.new
+      end
     end
   end
 
@@ -71,8 +88,11 @@ class Appfigures
                start: start_date.strftime('%Y-%m-%d'),
                end: end_date.strftime('%Y-%m-%d')}.merge(options)
     #"/?group_by=country&start=#{start_date.strftime('%Y-%m-%d')}/#{end_date.strftime('%Y-%m-%d')}#{options.to_query_string(true)}"
-    self.connection.get(url, options).body.map do |country, hash|
-      Hashie::Mash.new({
+    
+    response = self.connection.get(url, options)
+    response.body.map do |country, hash|
+      if response.status == 200 
+        Hashie::Mash.new({
           'iso'             => hash['iso'],
           'country'         => hash['country'],
           'downloads'       => hash['downloads'],
@@ -82,7 +102,12 @@ class Appfigures
           'promos'          => hash['promos'],
           'revenue'         => hash['revenue'],
           'gift_redemptions' => hash['gift_redemptions'],
-      })
+        })
+      else
+        puts 'Appfigures service error:'
+        puts hash.to_json
+        Hashie::Mash.new
+      end
     end
   end
 
@@ -93,25 +118,33 @@ class Appfigures
     options = {products: product_id,
                lang: 'en'
               }.merge(options)
-    response = self.connection.get(url, options).body
-    reviews = Hashie::Mash.new({
-                             'total' => response['total'].to_i,
-                             'pages' => response['pages'].to_i,
-                             'this_page' => response['this_page'].to_i,
-                             'reviews' => response['reviews'].map do |review|
-                               Hashie::Mash.new({
-                                                    'author'  => review['author'],
-                                                    'title'   => review['title'],
-                                                    'review'  => review['review'],
-                                                    'stars'   => review['stars'],
-                                                    'iso'     => review['iso'],
-                                                    'version' => review['version'],
-                                                    'date'    => review['date'],
-                                                    'product' => review['product'],
-                                                    'id'      => review['id']
-                                                })
-                             end
-              })
+
+    response = self.connection.get(url, options)
+    if response.status == 200
+      body = response.body
+      reviews = Hashie::Mash.new({
+                               'total' => body['total'].to_i,
+                               'pages' => body['pages'].to_i,
+                               'this_page' => body['this_page'].to_i,
+                               'reviews' => body['reviews'].map do |review|
+                                 Hashie::Mash.new({
+                                                      'author'  => review['author'],
+                                                      'title'   => review['title'],
+                                                      'review'  => review['review'],
+                                                      'stars'   => review['stars'],
+                                                      'iso'     => review['iso'],
+                                                      'version' => review['version'],
+                                                      'date'    => review['date'],
+                                                      'product' => review['product'],
+                                                      'id'      => review['id']
+                                                  })
+                               end
+                })
+    else
+      puts 'Appfigures service error:'
+      puts response.body.to_json
+      return Hashie::Mash.new
+    end
   end
 
   # GET /ratings?group_by=product&start_date={today}&end_date={today}products={productId}
@@ -124,11 +157,19 @@ class Appfigures
                products: product_id,
                start_date: today,
                end_date: today}.merge(options)
-    self.connection.get(url, options).body.map do |product, hash|
-      Hashie::Mash.new({
-          'stars' => product['stars'],
-          'product' => product['product']
-      })
+
+    response = self.connection.get(url, options)
+    response.body.map do |product, hash|
+      if response.status == 200
+        Hashie::Mash.new({
+            'stars' => product['stars'],
+            'product' => product['product']
+        })
+      else
+        puts 'Appfigures service error:'
+        puts hash.to_json
+        return Hashie::Mash.new
+      end
     end.first
   end
 
