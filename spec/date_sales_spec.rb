@@ -27,51 +27,36 @@ describe 'Appfigures date sales' do
             "promos": 1,
             "revenue": "100.99",
             "gift_redemptions": 10,
-            "product": {
-              "id": 123123,
-              "ref_no": "536354432",
-              "external_account_id": 397,
-              "store_id": 0,
-              "store_name": "apple",
-              "added_timestamp": "2012-07-23T00:00:00",
-              "name": "Test App",
-              "icon": "http://a5.mzstatic.com/us/r1000/091/Purple/v4/20/69/65/20696562-4e19-17fe-5ffe-cb77a78e1651/mzl.jtpselsb.png",
-              "active": true,
-              "hidden": false,
-              "sku": "TEST_APP",
-              "in_apps": [],
-              "product_type": "app",
-              "addons": []
-            }
+            "date": "2012-09-01",
+            "product_id": 123123
           }
         }
       }
       EOF
-      @api = Appfigures.new username: 'test', password: 'test'
+    body223123 = <<-EOF
+      {
+	"2012-09-01": {
+	  "223123": {
+	    "downloads": 30,
+      "product_id": 223123
+	  }
+	}
+      }
+      EOF
+      @api = Appfigures.new username: 'test', password: 'test', client_key: 'test'
       @stubs = Faraday::Adapter::Test::Stubs.new do |stub|
-        stub.get('/v1.1/sales/dates+products/2012-09-01/2012-09-01') { [status_code, headers, body] }
-      end
+
+	    stub.get('/v2/reports/sales/dates+products?end=2012-09-30&products=223123&start=2012-09-01') { [status_code, headers, body223123] }
+      stub.get('/v2/reports/sales/dates+products?end=2012-09-30&start=2012-09-01') { [status_code, headers, body] }
+	end
       @api.connection.adapter :test, @stubs
   end
 
   let(:start_date) { Date.parse('2012-09-01') }
-  let(:end_date) { Date.parse('2012-09-01') }
+  let(:end_date) { Date.parse('2012-09-30') }
 
   it 'returns a product ID' do
     expect(@api.date_sales(start_date, end_date).first.product_id).to eq(123123)
-  end
-
-  it 'returns a store ID' do
-    expect(@api.date_sales(start_date, end_date).first.store_id).to eq(0)
-  end
-  it 'returns a store name' do
-    expect(@api.date_sales(start_date, end_date).first.store_name).to eq('apple')
-  end
-  it 'returns a name' do
-    expect(@api.date_sales(start_date, end_date).first.name).to eq('Test App')
-  end
-  it 'returns a sku' do
-    expect(@api.date_sales(start_date, end_date).first.sku).to eq('TEST_APP')
   end
   it 'returns a download count' do
     expect(@api.date_sales(start_date, end_date).first.downloads).to eq(29)
@@ -93,6 +78,9 @@ describe 'Appfigures date sales' do
   end
   it 'returns a revenue number' do
     expect(@api.date_sales(start_date, end_date).first.revenue).to eq(100.99)
+  end
+  it 'returns a specific product ID' do
+    expect(@api.date_sales(start_date, end_date, { :products => 223123 }).first.product_id).to eq(223123)
   end
 
 end

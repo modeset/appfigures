@@ -25,29 +25,59 @@ describe 'Appfigures product sales' do
           "net_downloads": 26,
           "promos": 1,
           "revenue": "100.99",
+          "edu_downloads": 0,
+          "gifts": 0,
           "gift_redemptions": 10,
           "product": {
             "id": 123123,
-            "ref_no": "536354432",
-            "external_account_id": 397,
-            "store_id": 0,
-            "store_name": "apple",
-            "added_timestamp": "2012-07-23T00:00:00",
             "name": "Test App",
+            "developer": "Test Inc",
             "icon": "http://a5.mzstatic.com/us/r1000/091/Purple/v4/20/69/65/20696562-4e19-17fe-5ffe-cb77a78e1651/mzl.jtpselsb.png",
-            "active": true,
-            "hidden": false,
+            "vendor_identifier": "23292092",
+            "ref_no": "536354432",
             "sku": "TEST_APP",
-            "in_apps": [],
-            "product_type": "app",
-            "addons": []
-          }
+            "package_name": null,
+            "store_id": 0,
+            "store": "apple",
+            "storefront": "apple:ios",
+            "release_date": "2010-12-14T05:00:00",
+            "added_date": "2011-11-30T13:02:38",
+            "updated_date": "2015-05-06T09:00:53",
+            "version": "3.8.0",
+            "source": {
+              "external_account_id": 397,
+              "added_timestamp": "2012-07-23T00:00:00",
+              "active": true,
+              "hidden": false,
+              "type": "own"
+            },
+            "type": "app",
+            "devices": [
+              "Handheld",
+              "Tablet"
+            ],
+            "bundle_identifier": "com.appfigures.test",
+            "accessible_features": [
+              "sales",
+              "reviews",
+              "reviews_count",
+              "ranks",
+              "featured"
+            ],
+            "children": [],
+            "features": [],
+            "parent_id": null,
+            "storefronts": [
+              "apple:ios"
+            ]
+          },
+          "product_id": 6403600
         }
       }
       EOF
-      @api = Appfigures.new username: 'test', password: 'test'
+      @api = Appfigures.new username: 'test', password: 'test', client_key: 'test'
       @stubs = Faraday::Adapter::Test::Stubs.new do |stub|
-        stub.get('/v1.1/sales/products') { [status_code, headers, body] }
+        stub.get('/v2/reports/sales?group_by=product') { [status_code, headers, body] }
       end
       @api.connection.adapter :test, @stubs
   end
@@ -88,6 +118,18 @@ describe 'Appfigures product sales' do
   end
   it 'returns a revenue number' do
     expect(@api.product_sales.first.revenue).to eq(100.99)
+  end
+  it 'returns a ref_no' do
+    expect(@api.product_sales.first.ref_no).to eq('536354432')
+  end
+  it 'returns an added timestamp' do
+    expect(@api.product_sales.first.added_timestamp).to eq(Date.parse('2012-07-23T00:00:00'))
+  end
+  it 'returns an icon' do
+    expect(@api.product_sales.first.icon).to eq('http://a5.mzstatic.com/us/r1000/091/Purple/v4/20/69/65/20696562-4e19-17fe-5ffe-cb77a78e1651/mzl.jtpselsb.png')
+  end
+  it 'returns active' do
+    expect(@api.product_sales.first.active).to eq(true)
   end
 
 end
